@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TumorScan | Brain Tumor Detection</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #e6f0ff 0%, #ffffff 100%);
+      font-family: "Poppins", sans-serif;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 95%;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      padding: 40px 45px;
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    h2 {
+      font-weight: 600;
+      color: #0d6efd;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 25px;
+    }
+
+    .form-control[type="file"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1.5px solid #0d6efd;
+      transition: 0.3s ease;
+    }
+
+    .form-control[type="file"]:hover {
+      background-color: #f1f7ff;
+      border-color: #0a58ca;
+    }
+
+    .btn-primary {
+      background-color: #0d6efd;
+      border: none;
+      padding: 10px 25px;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: 0.3s;
+      margin-top: 15px;
+      width: auto;
+    }
+
+    .btn-primary:hover {
+      background-color: #0b5ed7;
+      transform: scale(1.03);
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .metric-card {
+      background: #f1f5ff;
+      border-left: 5px solid #0d6efd;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 25px;
+      text-align: left;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 35px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>🧠 TumorScan - Brain Tumor Detection</h2>
+    <p class="subtitle">Upload an MRI scan to detect and classify brain tumors using deep learning & Grad-CAM visualization.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+      <div class="mb-3 text-start">
+        <label for="file" class="form-label"><strong>Upload Brain MRI Scan:</strong></label>
+        <input class="form-control" type="file" name="file" id="file" required>
+      </div>
+      <div class="d-grid justify-content-center">
+        <button class="btn btn-primary" type="submit">🔍 Detect Tumor</button>
+      </div>
+    </form>
+
+    {% if result %}
+    <div class="mt-4 text-center">
+      <h4><strong>Prediction:</strong> {{ result }}</h4>
+      <p><strong>Confidence:</strong> {{ confidence }}</p>
+
+      {% if cam_path %}
+      <h5 class="text-primary mt-3">Grad-CAM Visualization:</h5>
+      <img src="{{ cam_path }}" alt="Grad-CAM Attention Map" class="img-fluid rounded">
+      {% endif %}
+
+      <div class="text-start mt-4">
+        <h5 class="text-primary">🩺 Tumor Details:</h5>
+        <p><strong>Description:</strong> {{ info.desc }}</p>
+        <p><strong>Severity:</strong> {{ info.severity }}</p>
+        <p><strong>Recommended Action:</strong> {{ info.action }}</p>
+      </div>
+
+      <div class="metric-card mt-4">
+        <h5 class="text-center">📊 Performance Metrics</h5>
+        <div class="row mt-3">
+          <div class="col-md-6"><strong>Accuracy:</strong> {{ metrics.accuracy }}%</div>
+          <div class="col-md-6"><strong>Precision:</strong> {{ metrics.precision }}%</div>
+          <div class="col-md-6"><strong>Recall:</strong> {{ metrics.recall }}%</div>
+          <div class="col-md-6"><strong>F1 Score:</strong> {{ metrics.f1 }}%</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <footer>
+      <p>© 2025 TumorScan | Powered by Flask, TensorFlow & VGG16</p>
+    </footer>
+  </div>
+</body>
+</html>
